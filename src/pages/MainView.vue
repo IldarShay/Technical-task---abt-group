@@ -18,12 +18,12 @@
       </thead>
 
       <tbody>
-        <tr>
-          <td>Alvin</td>
-          <td>Eclair</td>
-          <td>$0.87</td>
-          <td>Alvin</td>
-          <td>Eclair</td>
+        <tr v-for="(worker, i) in $store.state.workers" :key="i">
+          <td>{{ worker.firstName }}</td>
+          <td>{{ worker.lastName }}</td>
+          <td>{{ worker.middleName }}</td>
+          <td>{{ worker.birthDate }}</td>
+          <td>{{ worker.description }}</td>
           <td class="td_icons">
             <RouterLink tag="i" to="/edit_form">
               <i title="Редактировать" class="tiny material-icons">edit</i>
@@ -33,38 +33,32 @@
                 title="Удалить"
                 class="tiny material-icons modal-trigger"
                 href="#modal1"
-                ref="modal1"
+                ref="modal"
               >
                 delete
               </i>
             </a>
-            <div id="modal1" class="modal">
-              <div class="modal-content">
-                <h6>Запись будет удалена. Уверены ?</h6>
-              </div>
-              <div class="modal-footer">
-                <a
-                  href="#!"
-                  class="modal-close waves-effect waves-green btn-flat"
-                  >Ок
-                </a>
-                <a
-                  href="#!"
-                  class="modal-close waves-effect waves-green btn-flat"
-                  >Отмена
-                </a>
-              </div>
-            </div>
           </td>
         </tr>
+        <div id="modal1" class="modal">
+          <div class="modal-content">
+            <h6>Запись будет удалена. Уверены ?</h6>
+          </div>
+          <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat"
+              >Ок
+            </a>
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat"
+              >Отмена
+            </a>
+          </div>
+        </div>
       </tbody>
     </table>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-
 export default {
   mounted() {
     M.Modal.init(modal1);
