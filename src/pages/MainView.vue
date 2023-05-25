@@ -17,12 +17,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(worker, i) in $store.state.workers" :key="i + 1" ref="key">
+        <tr
+          v-for="(worker, i) in $store.state.workers"
+          :key="i + 1"
+          ref="key"
+          :id="i"
+        >
           <td>{{ worker.firstName }}</td>
           <td>{{ worker.lastName }}</td>
           <td>{{ worker.middleName }}</td>
           <td>{{ worker.birthDate }}</td>
-          <td>{{ worker.description }}</td>
+          <td class="td_description">{{ worker.description }}</td>
           <td class="td_icons">
             <RouterLink tag="button" :to="'/edit_form/' + (i + 1)">
               <i title="Редактировать" class="tiny material-icons">edit</i>
@@ -71,12 +76,13 @@ export default {
   methods: {
     handler(event) {
       let tr = event.target.closest("tr");
-      let fullName =
-        tr.children[1].textContent +
-          tr.children[0].textContent +
-          tr.children[2].textContent || "";
+      // let fullName =
+      //   tr.children[1].textContent +
+      //     tr.children[0].textContent +
+      //     tr.children[2].textContent || "";
+      let indexElement = tr.getAttribute("id");
       if (confirm("Запись будет удалена. Уверены?")) {
-        this.$store.dispatch("removeQuestionary", fullName);
+        this.$store.dispatch("removeQuestionary", indexElement);
       } else return false;
     },
   },
@@ -108,6 +114,10 @@ table {
   td {
     max-width: 320px;
     overflow-wrap: break-word;
+    text-align: center;
+  }
+  .td_description {
+    text-align: start;
   }
 }
 .td_icons {

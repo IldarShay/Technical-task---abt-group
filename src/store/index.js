@@ -31,8 +31,11 @@ export default createStore({
       state.workers = workers;
       localStorage.setItem("workers", JSON.stringify(state.workers));
     },
-    removeQuestionary(state, name) {
-      console.log(name);
+    removeQuestionary(state, idx) {
+      let workers = [...state.workers];
+      workers.splice(idx, 1);
+      state.workers = workers;
+      localStorage.setItem("workers", JSON.stringify(state.workers));
     },
   },
   actions: {
@@ -42,8 +45,8 @@ export default createStore({
     editQuestionary({ commit }, worker) {
       commit("editQuestionary", worker);
     },
-    removeQuestionary({ commit }, name) {
-      commit("removeQuestionary", name);
+    removeQuestionary({ commit }, idx) {
+      commit("removeQuestionary", idx);
     },
   },
   modules: {},

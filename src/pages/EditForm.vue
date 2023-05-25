@@ -74,7 +74,7 @@ export default {
           this.workerByIndex.firstName
         } ${this.workerByIndex.middleName || ""}`,
         birthDate: this.workerByIndex.birthDate,
-        description: this.workerByIndex.description,
+        description: this.workerByIndex.description || "",
         id: this.workerByIndex.id,
       };
       return worker;
