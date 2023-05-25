@@ -52,7 +52,6 @@ export default {
       description: "",
       validName: "",
       validBirth: null,
-      show: false,
     };
   },
   computed: {
@@ -70,18 +69,21 @@ export default {
         return false;
       }
       if (!this.validateBirth) {
-        alert("Введите дату рождения в формате ГГГГ-ММ-ДД");
+        alert("Введите корректную дату рождения в формате ГГГГ-ММ-ДД");
+        return false;
+      }
+      if (this.description.length > 100) {
+        alert("Описание содержит до 100 символов");
         return false;
       }
       const worker = {
-        // id: Date.now(),
+        id: Date.now(),
         firstName: name[1],
         lastName: name[0],
         middleName: name[2] || null,
         birthDate: this.birthDate,
         description: this.description || null,
       };
-      console.log(worker.firstName);
       this.$store.dispatch("createQuestionary", worker);
       this.$router.push("/");
     },

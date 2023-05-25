@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="btns">
-      <RouterLink to="/create_form" class="waves-effect waves-light btn"
+      <RouterLink to="/create_form" class="waves-effect waves-light btn-small"
         >Добавить запись</RouterLink
       >
     </div>
@@ -16,19 +16,18 @@
           <th class="th_action">Действия</th>
         </tr>
       </thead>
-
       <tbody>
-        <tr v-for="(worker, i) in $store.state.workers" :key="i">
+        <tr v-for="(worker, i) in $store.state.workers" :key="i + 1" ref="key">
           <td>{{ worker.firstName }}</td>
           <td>{{ worker.lastName }}</td>
           <td>{{ worker.middleName }}</td>
           <td>{{ worker.birthDate }}</td>
           <td>{{ worker.description }}</td>
           <td class="td_icons">
-            <RouterLink tag="i" to="/edit_form">
+            <RouterLink tag="button" :to="'/edit_form/' + (i + 1)">
               <i title="Редактировать" class="tiny material-icons">edit</i>
             </RouterLink>
-            <a href="#">
+            <a href="#" class="removeIcon" @click="handler">
               <i
                 title="Удалить"
                 class="tiny material-icons modal-trigger"
@@ -40,19 +39,23 @@
             </a>
           </td>
         </tr>
-        <div id="modal1" class="modal">
+        <!-- <div id="modal1" class="modal">
           <div class="modal-content">
             <h6>Запись будет удалена. Уверены ?</h6>
           </div>
           <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat"
-              >Ок
-            </a>
+            <button
+              href="#!"
+              class="modal-close waves-effect waves-green btn-flat"
+              @click="console.log(document.querySelector('.removeIcon'))"
+            >
+              Ок
+            </button>
             <a href="#!" class="modal-close waves-effect waves-green btn-flat"
               >Отмена
             </a>
           </div>
-        </div>
+        </div> -->
       </tbody>
     </table>
   </div>
@@ -60,8 +63,25 @@
 
 <script>
 export default {
+  data() {
+    return {
+      id: null,
+    };
+  },
+  methods: {
+    handler(event) {
+      let tr = event.target.closest("tr");
+      let fullName =
+        tr.children[1].textContent +
+          tr.children[0].textContent +
+          tr.children[2].textContent || "";
+      if (confirm("Запись будет удалена. Уверены?")) {
+        this.$store.dispatch("removeQuestionary", fullName);
+      } else return false;
+    },
+  },
   mounted() {
-    M.Modal.init(modal1);
+    // M.Modal.init(modal1);
   },
 };
 </script>
@@ -82,8 +102,12 @@ export default {
 table {
   margin: auto;
   width: 80%;
-  .th_action {
+  th {
     text-align: center;
+  }
+  td {
+    max-width: 320px;
+    overflow-wrap: break-word;
   }
 }
 .td_icons {

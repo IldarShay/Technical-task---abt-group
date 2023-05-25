@@ -12,7 +12,7 @@ const routes = [
     component: () => import("@/pages/CreateForm"),
   },
   {
-    path: "/edit_form",
+    path: "/edit_form/:index",
     name: "edit",
     component: () => import("@/pages/EditForm"),
   },
