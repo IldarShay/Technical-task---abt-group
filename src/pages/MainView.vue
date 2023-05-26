@@ -59,7 +59,7 @@ export default {
   methods: {
     handler(event) {
       let tr = event.target.closest("tr");
-      let indexElement = tr.getAttribute("id");
+      let indexElement = +tr.getAttribute("id");
       if (confirm("Запись будет удалена. Уверены?")) {
         this.$store.dispatch("removeQuestionary", indexElement);
       } else return false;
