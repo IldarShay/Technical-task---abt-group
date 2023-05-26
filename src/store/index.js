@@ -19,6 +19,22 @@ export default createStore({
       let workers = [...state.workers];
       let name = worker.fullName.trim().split(" ");
       let index = workers.findIndex((w) => w.id === worker.id);
+      // let validName = name.length > 1;
+      // let reValidBirth = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+      // let validBirth = reValidBirth.test(String(worker.birthDate));
+      // if (!validName) {
+      //   alert("Введите фамилию и имя");
+      //   return false;
+      // }
+      // if (!validBirth) {
+      //   alert("Введите корректную дату рождения в формате ГГГГ-ММ-ДД");
+      //   this.$router.push(`/edit_form/${index}`);
+      //   return false;
+      // }
+      // if (worker.description.length > 100) {
+      //   alert("Описание должно содержать до 100 символов");
+      //   return false;
+      // }
 
       workers[index] = {
         firstName: name[1],
@@ -37,6 +53,7 @@ export default createStore({
       state.workers = workers;
       localStorage.setItem("workers", JSON.stringify(state.workers));
     },
+    cancelEdit(state) {},
   },
   actions: {
     createQuestionary({ commit }, worker) {
@@ -47,6 +64,9 @@ export default createStore({
     },
     removeQuestionary({ commit }, idx) {
       commit("removeQuestionary", idx);
+    },
+    cancelEdit({ commit }) {
+      commit("cancelEdit");
     },
   },
   modules: {},

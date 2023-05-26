@@ -8,8 +8,8 @@
     <table class="highlight">
       <thead>
         <tr>
-          <th>Имя</th>
           <th>Фамилия</th>
+          <th>Имя</th>
           <th>Отчество</th>
           <th>Дата рождения</th>
           <th>Описание</th>
@@ -21,10 +21,10 @@
           v-for="(worker, i) in $store.state.workers"
           :key="i + 1"
           ref="key"
-          :id="i"
+          :id="worker.id"
         >
-          <td>{{ worker.firstName }}</td>
           <td>{{ worker.lastName }}</td>
+          <td>{{ worker.firstName }}</td>
           <td>{{ worker.middleName }}</td>
           <td>{{ worker.birthDate }}</td>
           <td class="td_description">{{ worker.description }}</td>
@@ -44,23 +44,6 @@
             </a>
           </td>
         </tr>
-        <!-- <div id="modal1" class="modal">
-          <div class="modal-content">
-            <h6>Запись будет удалена. Уверены ?</h6>
-          </div>
-          <div class="modal-footer">
-            <button
-              href="#!"
-              class="modal-close waves-effect waves-green btn-flat"
-              @click="console.log(document.querySelector('.removeIcon'))"
-            >
-              Ок
-            </button>
-            <a href="#!" class="modal-close waves-effect waves-green btn-flat"
-              >Отмена
-            </a>
-          </div>
-        </div> -->
       </tbody>
     </table>
   </div>
@@ -76,19 +59,13 @@ export default {
   methods: {
     handler(event) {
       let tr = event.target.closest("tr");
-      // let fullName =
-      //   tr.children[1].textContent +
-      //     tr.children[0].textContent +
-      //     tr.children[2].textContent || "";
       let indexElement = tr.getAttribute("id");
       if (confirm("Запись будет удалена. Уверены?")) {
         this.$store.dispatch("removeQuestionary", indexElement);
       } else return false;
     },
   },
-  mounted() {
-    // M.Modal.init(modal1);
-  },
+  mounted() {},
 };
 </script>
 

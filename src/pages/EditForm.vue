@@ -9,7 +9,7 @@
             type="text"
             class="validate"
           />
-          <label for="full_name"></label>
+          <label for="full_name">ФИО</label>
         </div>
         <div class="input-field col s12">
           <input
@@ -22,24 +22,22 @@
         </div>
         <div class="input-field col s12">
           <textarea
-            v-if="worker.description.length < 100"
-            v-model="worker.description"
+            v-if="description.length < 100"
+            v-model="description"
             id="textarea2"
             class="materialize-textarea"
             data-length="100"
           ></textarea>
           <textarea
             v-else
-            v-model="worker.description"
+            v-model="description"
             id="textarea2"
             class="materialize-textarea invalid"
             data-length="100"
           ></textarea>
 
           <label for="textarea2">Описание</label>
-          <span class="character-counter"
-            >{{ worker.description.length }}/100</span
-          >
+          <span class="character-counter">{{ description.length }}/100</span>
         </div>
       </div>
       <div class="btns">
@@ -50,8 +48,9 @@
           tag="a"
           to="/"
           class="waves-effect waves-light red darken-4 btn-small"
-          >Отмена</RouterLink
         >
+          Отмена
+        </RouterLink>
       </div>
     </form>
   </div>
@@ -62,7 +61,11 @@ import FormOne from "@/components/FormOne.vue";
 
 export default {
   data() {
-    return {};
+    return {
+      description: "",
+      fullName: "",
+      birthDate: "",
+    };
   },
   computed: {
     workerByIndex() {
@@ -70,28 +73,45 @@ export default {
     },
     worker() {
       const worker = {
-        fullName: `${this.workerByIndex.lastName} ${
-          this.workerByIndex.firstName
+        fullName: `${this.workerByIndex.lastName || ""} ${
+          this.workerByIndex.firstName || ""
         } ${this.workerByIndex.middleName || ""}`,
         birthDate: this.workerByIndex.birthDate,
-        description: this.workerByIndex.description || "",
+        description: this.workerByIndex.description,
         id: this.workerByIndex.id,
       };
+      this.description = worker.description;
+      this.worker = worker;
       return worker;
-    },
-    validateBirth() {
-      const reValidBirth = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
-      return reValidBirth.test(String(this.worker.birthDate));
     },
   },
   methods: {
     editFormHandler() {
+      let name = this.worker.fullName.trim().split(" ");
+      let validName = name.length > 1;
+      let reValidBirth = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
+      let validBirth = reValidBirth.test(String(this.worker.birthDate));
+
+      if (!validName) {
+        alert("Введите фамилию и имя");
+        return false;
+      }
+      if (validBirth === false || this.worker.birthDate.length !== 10) {
+        console.log(typeof this.worker.birthDate.length);
+        alert("Введите корректную дату рождения в формате ГГГГ-ММ-ДД");
+        return false;
+      }
+      if (this.description.length > 100) {
+        alert("Описание должно содержать до 100 символов");
+        return false;
+      }
       this.$store.dispatch("editQuestionary", {
         fullName: this.worker.fullName,
         birthDate: this.worker.birthDate,
-        description: this.worker.description,
+        description: this.description,
         id: this.worker.id,
       });
+
       this.$router.push("/");
     },
   },
